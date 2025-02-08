@@ -19,11 +19,14 @@ export default class Queue<T = number> {
   /**
    * This tracks the number of elements currently in the queue. It starts at 0, increases when elements are enqueued, and decreases when elements are dequeued. It ensures that enqueue and dequeue operations do not exceed the queue’s capacity or go below zero.
    */
-  private size: number = 0;
-  constructor(private capacity: number) /** This is the maximum number of elements the queue can hold.
+  private arraySize: number = 0;
+  constructor(
+    private capacity: number,
+  ) /** This is the maximum number of elements the queue can hold.
    * It is set during initialization and does not change. It is used to determine when the queue is full to prevent additional elements from being enqueued.
    * */ {
-    if (capacity <= 0) throw new Error('Queue capacity must be greater than zero.');
+    if (capacity <= 0)
+      throw new Error('Queue capacity must be greater than zero.');
     this.array = new Array<T | null>(capacity).fill(null);
   }
   isEmpty(): boolean {
@@ -38,7 +41,7 @@ export default class Queue<T = number> {
     }
     this.rear = (this.rear + 1) % this.capacity;
     this.array[this.rear] = value;
-    this.size++;
+    this.arraySize++;
     return true;
   }
 
@@ -49,7 +52,7 @@ export default class Queue<T = number> {
     const removedValue = this.array[this.front] as T;
     this.array[this.front] = null;
     this.front = (this.front + 1) % this.capacity;
-    this.size--;
+    this.arraySize--;
     return removedValue;
   }
 
@@ -60,7 +63,7 @@ export default class Queue<T = number> {
     return this.array[this.front] as T;
   }
 
-  getSize(): number {
+  get size(): number {
     return this.size;
   }
 
@@ -68,7 +71,7 @@ export default class Queue<T = number> {
     this.array.fill(null);
     this.front = 0;
     this.rear = -1;
-    this.size = 0;
+    this.arraySize = 0;
   }
 
   display(): void {
